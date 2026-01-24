@@ -1,0 +1,95 @@
+:root {
+  --ghost-white: #f9f9fe;
+  --aquamarine: #56f5d2;
+  --argentinian-blue: #45a8f0;
+  --phlox: #bb5ff9;
+  --eerie-black: #1c1c1f;
+  --warning-pink: #ff3cbf;
+}
+
+body {
+  background-color: var(--eerie-black);
+  background-image: url("assets/PurpleCyanPixelOrbs.png");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--ghost-white);
+  font-family: 'Lucida Console', 'Courier New', monospace;
+  line-height: 1.7;
+  font-size: 20px;
+  padding: 2rem;
+  animation: bgScroll 15s linear infinite;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: rgba(28, 28, 31, 0.85);
+  border: 2px solid var(--phlox);
+  border-radius: 10px;
+  box-shadow: 0 0 12px var(--phlox);
+  text-align: center;
+}
+
+h1 {
+  color: var(--phlox);
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+h2, h3 {
+  color: var(--aquamarine);
+  margin-bottom: 1rem;
+}
+
+p {
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.choices a {
+  color: var(--aquamarine);
+  text-decoration: none;
+  background-color: transparent;
+  border: 2px solid var(--argentinian-blue);
+  padding: 0.75rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+.choices a:hover {
+  background-color: var(--phlox);
+  color: var(--eerie-black);
+  transform: scale(1.05);
+  box-shadow: 0 0 10px var(--phlox);
+}
+
+.choices a:focus {
+  outline: 2px solid var(--aquamarine);
+  outline-offset: 2px;
+  background-color: var(--phlox);
+  color: var(--eerie-black);
+  box-shadow: 0 0 10px var(--phlox);
+}
+
+.choices a:visited {
+  color: var(--argentinian-blue);
+}
+
+@keyframes bgScroll {
+  0% {
+    background-position: center center;
+  }
+  100% {
+    background-position: center calc(center + 100px);
+  }
+}
