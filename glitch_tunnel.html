@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GLITCH.EXE - TUNNEL</title>
     <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+    </style>
   </head>
   <body class="glitch">
     <div class="container">
@@ -17,6 +26,129 @@
       <div class="choices">
         <a href="index.html"> ⬅️ Restart </a>
     </div>
-   </div>  
+   </div>
+
+  <script>
+    let particles = [];
+    let glitchBurst = false;
+    let burstTimer = 0;
+
+    // Color palette from CSS
+    const colors = {
+      phlox: '#bb5ff9',
+      aquamarine: '#56f5d2',
+      argentinianBlue: '#45a8f0',
+      warningPink: '#ff3cbf',
+      eerieBlack: '#1c1c1f'
+    };
+
+    function setup() {
+      createCanvas(windowWidth, windowHeight);
+      // Create initial particles
+      for (let i = 0; i < 150; i++) {
+        particles.push(new GlitchParticle());
+      }
+    }
+
+    function draw() {
+      background(28, 28, 31, 50); // Semi-transparent black for trail effect
+
+      // Random corruption bursts
+      if (random(1) < 0.01) {
+        glitchBurst = true;
+        burstTimer = 30;
+      }
+
+      if (burstTimer > 0) {
+        burstTimer--;
+        if (burstTimer === 0) glitchBurst = false;
+      }
+
+      // Update and draw particles
+      for (let p of particles) {
+        p.update();
+        p.display();
+      }
+    }
+
+    function windowResized() {
+      resizeCanvas(windowWidth, windowHeight);
+    }
+
+    class GlitchParticle {
+      constructor() {
+        this.reset();
+        this.y = random(height);
+        this.colorIndex = floor(random(3));
+      }
+
+      reset() {
+        this.x = random(width);
+        this.y = random(-100, -10);
+        this.vx = random(-1, 1);
+        this.vy = random(2, 5);
+        this.size = random(2, 6);
+        this.angle = random(TWO_PI);
+        this.angleVel = random(-0.1, 0.1);
+        this.colorIndex = floor(random(3));
+        this.glitchOffset = 0;
+      }
+
+      update() {
+        // Swirling motion
+        this.angle += this.angleVel;
+        this.vx += cos(this.angle) * 0.1;
+        this.vy += sin(this.angle) * 0.05;
+
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Glitch displacement
+        if (glitchBurst) {
+          this.glitchOffset = random(-20, 20);
+        } else {
+          this.glitchOffset *= 0.9;
+        }
+
+        // Wrap around or reset
+        if (this.y > height + 10) {
+          this.reset();
+        }
+        if (this.x < -10 || this.x > width + 10) {
+          this.x = random(width);
+        }
+      }
+
+      display() {
+        let particleColors = [colors.phlox, colors.aquamarine, colors.argentinianBlue];
+        let col = particleColors[this.colorIndex];
+
+        // Chromatic aberration effect
+        if (glitchBurst || random(1) < 0.1) {
+          // Red channel
+          fill(187, 95, 249, 150);
+          noStroke();
+          circle(this.x - 2 + this.glitchOffset, this.y, this.size);
+
+          // Green channel
+          fill(86, 245, 210, 150);
+          circle(this.x + this.glitchOffset, this.y, this.size);
+
+          // Blue channel
+          fill(69, 168, 240, 150);
+          circle(this.x + 2 + this.glitchOffset, this.y, this.size);
+        } else {
+          // Normal rendering
+          fill(col);
+          noStroke();
+          circle(this.x + this.glitchOffset, this.y, this.size);
+
+          // Glow effect
+          fill(col + '40'); // Add transparency
+          circle(this.x + this.glitchOffset, this.y, this.size * 2);
+        }
+      }
+    }
+  </script>
   </body>
 </html>
