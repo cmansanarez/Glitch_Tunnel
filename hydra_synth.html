@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLITCH.EXE - HYDRA SYNTH</title>
+    <link href="style.css" rel="stylesheet" type="text/css" media="all">
+    <script src="https://unpkg.com/hydra-synth@1.4.0/dist/hydra-synth.js"></script>
+    <style>
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+
+      .container {
+        backdrop-filter: blur(5px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🌈 THE HYDRA INTERFACE 🌈</h1>
+      <p>You've passed through. Reality dissolves into flowing patterns. <em>Frequencies merge.</em> The digital realm breathes.<br><br>
+      You've entered the Hydra space—the heart of the system. Here, code becomes liquid light. Corruption becomes creation. 💫</p>
+
+      <p>The patterns speak: <em>"YOU ARE NOW CONNECTED. OBSERVE. LEARN. EVOLVE."</em></p>
+
+      <p>This is not the end. This is synthesis.</p>
+
+      <div class="choices">
+        <a href="glitch_tunnel.html">🌀 Return to the Tunnel</a>
+        <a href="static_trail.html">👣 Follow the Static Trail</a>
+        <a href="index.html">⬅️ Exit the System</a>
+      </div>
+    </div>
+
+    <script>
+      // Initialize Hydra
+      const hydra = new Hydra({
+        canvas: document.createElement('canvas'),
+        detectAudio: false
+      });
+
+      // Insert canvas at the beginning of body
+      document.body.insertBefore(hydra.canvas, document.body.firstChild);
+
+      // Glitchy color palette matching the theme
+      // Phlox: #bb5ff9 (187, 95, 249)
+      // Aquamarine: #56f5d2 (86, 245, 210)
+      // Argentinian Blue: #45a8f0 (69, 168, 240)
+      // Warning Pink: #ff3cbf (255, 60, 191)
+
+      // Create layered glitch effect
+      // Layer 1: Oscillating shapes with kaleidoscope
+      osc(10, 0.01, 1.4)
+        .color(0.73, 0.37, 0.97) // Phlox purple
+        .rotate(0.1, 0.1)
+        .kaleid(6)
+        .blend(
+          // Layer 2: Noise with pixelation
+          noise(3, 0.1)
+            .color(0.33, 0.96, 0.82) // Aquamarine
+            .pixelate(20, 20)
+            .scrollX(0.1)
+        )
+        .modulate(
+          // Layer 3: Shape modulation
+          shape(4, 0.5, 0.001)
+            .color(0.27, 0.66, 0.94) // Argentinian blue
+            .rotate(0.5, 0.1)
+        )
+        .contrast(1.4)
+        .brightness(0.1)
+        .out();
+
+      // Alternative patterns - you can swap these in!
+      // Uncomment any of these to try different effects:
+
+      /*
+      // Glitch tunnel effect
+      osc(20, 0.01, 2)
+        .kaleid(50)
+        .color(1, 0.23, 0.75) // Warning pink
+        .colorama(0.5)
+        .rotate(0.5, 0.1)
+        .modulate(noise(3))
+        .out();
+      */
+
+      /*
+      // Fractal noise
+      noise(4, 0.2)
+        .color(0.73, 0.37, 0.97)
+        .kaleid(8)
+        .scale(1.5)
+        .blend(
+          osc(6, 0.1, 1.5)
+            .color(0.33, 0.96, 0.82)
+        )
+        .out();
+      */
+
+      /*
+      // RGB split glitch
+      shape(3)
+        .repeat(3, 3)
+        .color(0.73, 0.37, 0.97)
+        .scrollX(0.1)
+        .blend(
+          shape(4)
+            .repeat(2, 2)
+            .color(0.33, 0.96, 0.82)
+            .scrollX(-0.1)
+        )
+        .modulate(noise(5, 0.1), 0.5)
+        .out();
+      */
+    </script>
+  </body>
+</html>
