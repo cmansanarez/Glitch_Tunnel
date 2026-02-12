@@ -54,71 +54,80 @@
       // Argentinian Blue: #45a8f0 (69, 168, 240)
       // Warning Pink: #ff3cbf (255, 60, 191)
 
-      // Create layered glitch effect
-      // Layer 1: Oscillating shapes with kaleidoscope
-      osc(10, 0.01, 1.4)
-        .rotate(0.1, 0.1)
-        .kaleid(6)
-        .blend(
-          // Layer 2: Noise with pixelation
-          noise(3, 0.1)
-            .color(0.33, 0.96, 0.82) // Aquamarine
-            .pixelate(20, 20)
-            .scrollX(0.1)
-        )
-        .modulate(
-          // Layer 3: Shape modulation
-          shape(4, 0.5, 0.1)
-            .color(0.27, 0.66, 0.94) // Argentinian blue
+      // Define all visual effects as functions
+      const effects = [
+        // Effect 1: Layered glitch with kaleidoscope
+        function() {
+          osc(10, 0.01, 1.4)
+            .rotate(0.1, 0.1)
+            .kaleid(6)
+            .blend(
+              noise(3, 0.1)
+                .color(0.33, 0.96, 0.82) // Aquamarine
+                .pixelate(20, 20)
+                .scrollX(0.1)
+            )
+            .modulate(
+              shape(4, 0.5, 0.1)
+                .color(0.27, 0.66, 0.94) // Argentinian blue
+                .rotate(0.5, 0.1)
+            )
+            .contrast(1.4)
+            .brightness(0.1)
+            .scrollY(0, 0.1)
+            .out();
+        },
+
+        // Effect 2: Glitch tunnel effect
+        function() {
+          osc(20, 0.01, 2)
+            .kaleid(50)
+            .color(0.3, 0.5, 1)
             .rotate(0.5, 0.1)
-        )
-        .contrast(1.4)
-        .brightness(0.1)
-        .scrollY(0, 0.1)
-        .out();
+            .modulate(noise(3), 0.1)
+            .scale([0.2, 2].fast(0.2).smooth(1))
+            .out();
+        },
 
-      // Alternative patterns - you can swap these in!
-      // Uncomment any of these to try different effects:
+        // Effect 3: Fractal noise
+        function() {
+          noise(4, 0.2)
+            .color(0.73, 0.37, 0.97)
+            .kaleid(8)
+            .scale(1.5)
+            .blend(
+              osc(6, 0.1, 1.5)
+                .color(0.33, 0.96, 0.82)
+            )
+            .rotate(0.1, 0.12)
+            .out();
+        },
 
-      /*
-      // Glitch tunnel effect
-      osc(20, 0.01, 2)
-        .kaleid(50)
-        .color(1, 0.23, 0.75) // Warning pink
-        .colorama(0.5)
-        .rotate(0.5, 0.1)
-        .modulate(noise(3))
-        .out();
-      */
+        // Effect 4: RGB split glitch
+        function() {
+          shape(3)
+            .repeat(3, 3)
+            .color(0.73, 0.07, 0.97)
+            .scrollX(0.1)
+            .blend(
+              shape(4)
+                .repeat(2, 2)
+                .color(0.33, 0.85, 0.90)
+                .scrollX(-0.1)
+            )
+            .modulate(noise(5, 0.1), 0.5)
+            .modulate(src(o0), [0, 0.1].fast(1.2).smooth(1))
+            .blend(src(o0))
+            .scrollY(0, 0.5)
+            .out(o0);
+        }
+      ];
 
-      /*
-      // Fractal noise
-      noise(4, 0.2)
-        .color(0.73, 0.37, 0.97)
-        .kaleid(8)
-        .scale(1.5)
-        .blend(
-          osc(6, 0.1, 1.5)
-            .color(0.33, 0.96, 0.82)
-        )
-        .out();
-      */
+      // Randomly select and execute one effect
+      const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+      randomEffect();
 
-      /*
-      // RGB split glitch
-      shape(3)
-        .repeat(3, 3)
-        .color(0.73, 0.37, 0.97)
-        .scrollX(0.1)
-        .blend(
-          shape(4)
-            .repeat(2, 2)
-            .color(0.33, 0.96, 0.82)
-            .scrollX(-0.1)
-        )
-        .modulate(noise(5, 0.1), 0.5)
-        .out();
-      */
+      console.log(`🌈 Hydra Effect ${effects.indexOf(randomEffect) + 1} of ${effects.length} loaded`);
     </script>
   </body>
 </html>
