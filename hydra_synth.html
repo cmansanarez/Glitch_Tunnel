@@ -12,8 +12,10 @@
         top: 0;
         left: 0;
         z-index: -1;
-        width: 100vw !important;
-        height: 100vh !important;
+        width: 100vw;
+        height: 100vh;
+        /* Allow crisp rendering, no forced smoothing */
+        image-rendering: auto;
       }
 
       .container {
@@ -39,14 +41,58 @@
     </div>
 
     <script>
-      // Initialize Hydra
-      const hydra = new Hydra({
-        canvas: document.createElement('canvas'),
-        detectAudio: false
+      // Create canvas element
+      const canvas = document.createElement('canvas');
+      document.body.insertBefore(canvas, document.body.firstChild);
+
+      // Initialize Hydra with proper resolution
+      let hydra;
+
+      function initHydra() {
+        // Get device pixel ratio for high-DPI displays
+        const dpr = window.devicePixelRatio || 1;
+
+        // Calculate internal canvas resolution
+        const width = Math.floor(window.innerWidth * dpr);
+        const height = Math.floor(window.innerHeight * dpr);
+
+        // Set canvas internal resolution (drawing buffer)
+        canvas.width = width;
+        canvas.height = height;
+
+        // CSS size remains at 100vw/100vh (already set in styles)
+        // This ensures the canvas fills the viewport without stretching
+
+        // Initialize or update Hydra
+        if (!hydra) {
+          hydra = new Hydra({
+            canvas: canvas,
+            detectAudio: false,
+            width: width,
+            height: height
+          });
+        } else {
+          // Update resolution for existing Hydra instance
+          hydra.setResolution(width, height);
+        }
+
+        console.log(`🎨 Hydra canvas initialized: ${width}x${height} (DPR: ${dpr})`);
+      }
+
+      // Handle window resize
+      function handleResize() {
+        initHydra();
+      }
+
+      // Debounce resize to avoid performance issues
+      let resizeTimeout;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(handleResize, 100);
       });
 
-      // Insert canvas at the beginning of body
-      document.body.insertBefore(hydra.canvas, document.body.firstChild);
+      // Initial setup
+      initHydra();
 
       // Glitchy color palette matching the theme
       // Phlox: #bb5ff9 (187, 95, 249)
@@ -123,7 +169,7 @@
         }
       ];
 
-      // Randomly select and execute one effect
+      // Execute random effect after Hydra is initialized
       const randomEffect = effects[Math.floor(Math.random() * effects.length)];
       randomEffect();
 
